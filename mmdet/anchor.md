@@ -25,6 +25,9 @@ stride는 `[image_width // anchor_width], [image_height // anchor_height]`로 �
 
 중심 좌표가 stride 만큼 떨어져서 존재한다고 보면 되고, 그 위에 그려지는 box의 크기는 base_anchor_size(`AnchorGenerator.base_anchors`)가 결정하게 됩니다. scale, ratio 2개 parameter로 결정되는 크기이고 크기의 단위는 1stride가 됩니다. 
 
+RetinaNet의 경우 Octave scale을 사용하였습니다. faster-rcnn에서 사용한, 2,4,6 등 n배로 올라가는 scale 간격 대신 2^0, 2^(1/3), 2^(2/3)과 같이 (base scale)^(octave scale)을 사용하였습니다. 
+
+
 feature map이 작은 경우, stride가 커지게 되고 scale, ratio의 image에서 실제 크기는 stride에 의해 결정되기 때문에 anchor box의 크기도 매우 커져서 예측하려는 물체가 상당히 클 것입니다. 
 
 반대로 feature map이 큰 경우는 stride가 작고 위와 반대로 anchor box의 크기가 작아져서 예측하려는 물체가 작을 것입니다. 
