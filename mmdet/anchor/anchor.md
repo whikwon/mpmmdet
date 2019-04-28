@@ -51,6 +51,7 @@ delta는 **anchor에 대한 차이**이기 때문에 anchor grid를 가지고 �
 
 ---------------------------------------------------------------------------------------------------------
 
+## FasterRCNN
 - [1] Translation-Invariant Anchors
      An important property of our approach is that it is translation invariant, both in terms of the anchors and the functions that compute proposals relative to the anchors.
      If one translates an object in an image, the proposal should translate and the same function should be able to predict the proposal in either location.
@@ -70,3 +71,9 @@ delta는 **anchor에 대한 차이**이기 때문에 anchor grid를 가지고 �
 - [5] It is possible to optimize for the loss functions of all anchors, but this will bias towards negative samples as they are dominate.
      Instead, we randomly sample 256 anchors in an image to compute the loss function of a mini-batch, where the sampled positive and negative anchors have a ratio of up to 1:1.
 
+
+## RetinaNet
+- [6] The design of our RetinaNet detector shares many similarities with previous dense detectors, in particular the concept of 'anchors' introduced by RPN and use of features pyramids as in SSD and FPN. 
+- [7] We use translation-invariant anchor boxes similar to those in the RPN variant. The anchors have areas of $32^2$ to $512^2$ on pyramid levels $P_3$ to $P_7$, respectively. at each pyramid level we use anchors at three aspect ratios $\{1:2, 1:1, 2:1\}$. For denser scale coverage, at each level we add anchors of sizes $\{2^0, 2^{1/3}, 2^{2/3}\}$ of the original set of 3 aspect ratio anchors. This improve AP in our setting. In total there are $A=9$ anchors per level and across levels they cover the scale range $32-813$ pixels with respect to the network's input image. Each anchor is assigned a length $K$ one-hot vector of classification targets, where $K$ is the number of object classes, and a $4$-vector of box regression targets. We use the assignment rule from RPN but modified for multi-class detection and with adjusted thresholds. Specifically, anchors are assigned to ground-truth object boxes using an intersection-over-union(IoU) threshold of $0.5$; and to background if their IoU is in $[0, 0.4)$. As each anchor is assigned to at most one object box, we set the corresponding entry in its length $K$ label vector to $1$ and all other entries to $0$. If an anchor is unassigned, which may happen with overlap in $[0.4, 0.5)$, it is ignored during training. Box regression targets are computed as the offset between each anchor and its assigned object box, or omitted if there is no assignment.
+- [8] The classification subnet predicts the probability of object presence at each spatial position for each of the $A$ anchors and $K$ object classes.
+- [9] In parallel with the object classification subnet, we attach another small FCN to each pyramid level for the purpose of regressing the offset from each anchor box to a nearby ground-truth object, if one exists. For each of the $A$ anchors per spatial location, these 4 outputs predict the relative offset between the anchor and the ground-truth box.
